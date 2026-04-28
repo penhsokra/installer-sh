@@ -12,7 +12,7 @@ echo "☕ Java Installer ($USER USER ONLY)"
 echo "======================================"
 
 # -----------------------------
-# 0. Check folder exists (NO CREATE)
+# 0. Check folder exists
 # -----------------------------
 if [ ! -d "$JDK_DIR" ]; then
   echo "❌ ERROR: $JDK_DIR does not exist"
@@ -50,7 +50,6 @@ fi
 echo "===> Extracting JDK..."
 
 tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
-
 rm -f "$TMP_FILE"
 
 # -----------------------------
@@ -58,7 +57,14 @@ rm -f "$TMP_FILE"
 # -----------------------------
 echo "===> Configuring environment..."
 
-PROFILE="~/.bash_profile"
+# choose profile safely
+if [ -f "$HOME/.bash_profile" ]; then
+  PROFILE="$HOME/.bash_profile"
+else
+  PROFILE="$HOME/.bashrc"
+fi
+
+echo "Using profile: $PROFILE"
 
 if ! grep -q "JAVA_HOME" "$PROFILE" 2>/dev/null; then
   cat <<EOF >> "$PROFILE"
@@ -69,12 +75,12 @@ export PATH=\$JAVA_HOME/bin:\$PATH
 EOF
 fi
 
-# apply immediately (IMPORTANT)
+# apply immediately
 export JAVA_HOME="$JDK_DIR"
-export PATH="$JAVA_DIR/bin:$PATH"
+export PATH="$JAVA_HOME/bin:$PATH"
 
-# reload profile (FIX)
-. ~/.bash_profile
+# reload profile safely
+[ -f "$PROFILE" ] && source "$PROFILE"
 
 # -----------------------------
 # 5. Verify installation
