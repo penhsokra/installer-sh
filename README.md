@@ -3,5 +3,5 @@ What you want is basically a one-command installer from Git — very common in D
 
 
 ```bash
-curl -s https://github.com/penhsokra/installer-sh/blob/main/install-java.sh | bash
+curl -s https://raw.githubusercontent.com/penhsokra/installer-sh/main/install-java.sh | bash
 ```
