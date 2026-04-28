@@ -18,8 +18,8 @@ tar -xzf apache-tomcat-11.0.21.tar.gz -C . --strip-components=1
 ### Set up alias in bash profile
 ```bash
 alias tlog='tail -1000f /opt/apache-tomcat-11.0.21/logs/catalina.out'
-alias tstart='sh /opt/apache-tomcat-11.0.18/bin/startup.sh'
-alias tstop='sh /opt/apache-tomcat-11.0.18/bin/shutdown.sh'
+alias tstart='sh /opt/apache-tomcat-11.0.21/bin/startup.sh'
+alias tstop='sh /opt/apache-tomcat-11.0.21/bin/shutdown.sh'
 ```
 ### Start Tomcat
 ```bash
