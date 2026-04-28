@@ -58,7 +58,7 @@ rm -f "$TMP_FILE"
 # -----------------------------
 echo "===> Configuring environment..."
 
-PROFILE="$HOME/.bash_profile"
+PROFILE="~/.bash_profile"
 
 if ! grep -q "JAVA_HOME" "$PROFILE" 2>/dev/null; then
   cat <<EOF >> "$PROFILE"
@@ -74,9 +74,7 @@ export JAVA_HOME="$JDK_DIR"
 export PATH="$JAVA_DIR/bin:$PATH"
 
 # reload profile (FIX)
-if [ -f "$PROFILE" ]; then
-  source "$PROFILE"
-fi
+. ~/.bash_profile
 
 # -----------------------------
 # 5. Verify installation
