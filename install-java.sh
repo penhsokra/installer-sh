@@ -31,6 +31,7 @@ else
   sudo mkdir -p "$JDK_DIR"
   sudo chown "web:web" "$JDK_DIR"
   sudo chmod 750 "$JDK_DIR"
+  sudo su - web
 fi
 
 # -----------------------------
@@ -45,7 +46,7 @@ wget -q --show-progress -O "$TMP_FILE" "$JDK_URL"
 # -----------------------------
 echo "===> Extracting JDK..."
 
-sudo tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
+tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
 
 rm -f "$TMP_FILE"
 
