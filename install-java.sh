@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-JDK_DIR="$HOME/jdk"
+JDK_DIR="/opt/jdk"
 TMP_FILE="/tmp/jdk.tar.gz"
 
 JDK_URL="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz"
@@ -10,6 +10,18 @@ JDK_URL="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17
 echo "======================================"
 echo "☕ Java Installer (WEB USER ONLY)"
 echo "======================================"
+
+# -----------------------------
+# 0. Check folder exists (NO CREATE)
+# -----------------------------
+if [ ! -d "$JDK_DIR" ]; then
+  echo "❌ ERROR: $JDK_DIR does not exist"
+  echo "👉 Please create it first:"
+  echo "   sudo mkdir -p $JDK_DIR"
+  exit 1
+fi
+
+echo "✔ JDK directory exists: $JDK_DIR"
 
 # -----------------------------
 # 1. Check existing installation
