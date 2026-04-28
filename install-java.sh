@@ -5,9 +5,11 @@ set -euo pipefail
 JDK_DIR="/opt/jdk"
 JDK_URL="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz"
 TMP_FILE="/tmp/jdk.tar.gz"
+TARGET_USER="web"
+TARGET_HOME="/home/web"
 
 echo "======================================"
-echo "☕ Java Temurin 17 Installer"
+echo "☕ Java Installer (WEB USER ONLY)"
 echo "======================================"
 
 # -----------------------------
@@ -15,23 +17,18 @@ echo "======================================"
 # -----------------------------
 if [ -x "$JDK_DIR/bin/java" ]; then
   echo "✔ Java already installed at $JDK_DIR"
-  java -version
+  sudo -u $TARGET_USER $JDK_DIR/bin/java -version
   exit 0
 fi
 
 # -----------------------------
-# 2. Check before creating directory
+# 2. Create directory
 # -----------------------------
-echo "===> Check JDK directory: $JDK_DIR"
+echo "===> Creating JDK directory"
 
-if [ -d "$JDK_DIR" ]; then
-  echo "✔ Directory already exists: $JDK_DIR (skip creation)"
-else
-  echo "===> Creating JDK directory: $JDK_DIR"
-  sudo mkdir -p "$JDK_DIR"
-  sudo chown "$USER:$USER" "$JDK_DIR"
-  sudo chmod 750 "$JDK_DIR"
-fi
+sudo mkdir -p "$JDK_DIR"
+sudo chown -R "$TARGET_USER:$TARGET_USER" "$JDK_DIR"
+sudo chmod 750 "$JDK_DIR"
 
 # -----------------------------
 # 3. Download JDK
@@ -51,48 +48,39 @@ fi
 echo "===> Extracting JDK..."
 
 sudo tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
-
 rm -f "$TMP_FILE"
 
 # -----------------------------
-# 5. Configure environment (.bash_profile)
+# 5. Configure environment for WEB user only
 # -----------------------------
-echo "===> Configuring environment..."
+echo "===> Configuring environment for user web"
 
-PROFILE="$HOME/.bash_profile"
+WEB_PROFILE="$TARGET_HOME/.bash_profile"
 
-if ! grep -q "JAVA_HOME" "$PROFILE" 2>/dev/null; then
-  cat <<EOF >> "$PROFILE"
+sudo -u "$TARGET_USER" bash -c "
+if ! grep -q JAVA_HOME $WEB_PROFILE 2>/dev/null; then
+  cat <<EOF >> $WEB_PROFILE
 
 # Java Environment
-export JAVA_HOME="$JDK_DIR"
+export JAVA_HOME=$JDK_DIR
 export PATH=\$JAVA_HOME/bin:\$PATH
 EOF
 fi
+"
 
-# apply immediately (current session)
+# -----------------------------
+# 6. Apply immediately for current script
+# -----------------------------
 export JAVA_HOME="$JDK_DIR"
 export PATH="$JAVA_HOME/bin:$PATH"
 
-# reload profile safely
-if [ -f "$PROFILE" ]; then
-  echo "===> Reloading ~/.bash_profile"
-  source "$PROFILE"
-fi
-
 # -----------------------------
-# 6. Verify installation
+# 7. Verify as web user
 # -----------------------------
-echo "===> Verifying installation..."
+echo "===> Verifying Java as web user..."
 
-if command -v java >/dev/null 2>&1; then
-  java -version
-  which java
-else
-  echo "❌ Java not found after installation"
-  exit 1
-fi
+sudo -u "$TARGET_USER" $JDK_DIR/bin/java -version
 
 echo ""
-echo "✅ Java installation completed successfully!"
+echo "✅ Java installed successfully for user: $TARGET_USER"
 echo "📍 JAVA_HOME: $JAVA_HOME"
