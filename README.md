@@ -6,3 +6,24 @@ What you want is basically a one-command installer from Git — very common in D
 ```bash
 curl -s https://raw.githubusercontent.com/penhsokra/installer-sh/main/install-java.sh | bash
 ```
+
+## Install Tomcat
+```bash
+wget https://downloads.apache.org/tomcat/tomcat-11/v11.0.21/bin/apache-tomcat-11.0.21.tar.gz
+```
+
+```bash
+tar -xzf apache-tomcat-11.0.21.tar.gz -C . --strip-components=1
+alias tlog='tail -1000f /opt/apache-tomcat-11.0.21/logs/catalina.out'
+alias tstart='sh /opt/apache-tomcat-11.0.18/bin/startup.sh'
+alias tstop='sh /opt/apache-tomcat-11.0.18/bin/shutdown.sh'
+## Set up alias in bash profile
+```
+Set up alias in bash profile
+
+### Set up alias in bash profile
+```bash
+alias tlog='tail -1000f /opt/apache-tomcat-11.0.21/logs/catalina.out'
+alias tstart='sh /opt/apache-tomcat-11.0.18/bin/startup.sh'
+alias tstop='sh /opt/apache-tomcat-11.0.18/bin/shutdown.sh'
+```
