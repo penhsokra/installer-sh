@@ -29,9 +29,8 @@ if [ -d "$JDK_DIR" ]; then
 else
   echo "===> Creating JDK directory: $JDK_DIR"
   sudo mkdir -p "$JDK_DIR"
-  sudo chown "web:web" "$JDK_DIR"
+  sudo chown "$USER:$USER" "$JDK_DIR"
   sudo chmod 750 "$JDK_DIR"
-  sudo su - web
 fi
 
 # -----------------------------
@@ -41,17 +40,22 @@ echo "===> Downloading JDK..."
 
 wget -q --show-progress -O "$TMP_FILE" "$JDK_URL"
 
+if [ ! -s "$TMP_FILE" ]; then
+  echo "❌ Download failed"
+  exit 1
+fi
+
 # -----------------------------
 # 4. Extract JDK
 # -----------------------------
 echo "===> Extracting JDK..."
 
-tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
+sudo tar -xzf "$TMP_FILE" -C "$JDK_DIR" --strip-components=1
 
 rm -f "$TMP_FILE"
 
 # -----------------------------
-# 5. Configure environment
+# 5. Configure environment (.bash_profile)
 # -----------------------------
 echo "===> Configuring environment..."
 
@@ -66,17 +70,28 @@ export PATH=\$JAVA_HOME/bin:\$PATH
 EOF
 fi
 
-# apply immediately
+# apply immediately (current session)
 export JAVA_HOME="$JDK_DIR"
 export PATH="$JAVA_HOME/bin:$PATH"
+
+# reload profile safely
+if [ -f "$PROFILE" ]; then
+  echo "===> Reloading ~/.bash_profile"
+  source "$PROFILE"
+fi
 
 # -----------------------------
 # 6. Verify installation
 # -----------------------------
 echo "===> Verifying installation..."
 
-java -version
-which java
+if command -v java >/dev/null 2>&1; then
+  java -version
+  which java
+else
+  echo "❌ Java not found after installation"
+  exit 1
+fi
 
 echo ""
 echo "✅ Java installation completed successfully!"
