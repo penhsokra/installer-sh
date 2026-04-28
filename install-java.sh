@@ -66,7 +66,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 # -----------------------------
 echo "===> Verifying installation..."
 
-"$JDK_DIR/bin/java" -version
+java -version
 
 echo ""
 echo "✅ Java installed successfully"
