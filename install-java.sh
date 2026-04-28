@@ -8,7 +8,7 @@ TMP_FILE="/tmp/jdk.tar.gz"
 JDK_URL="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.16%2B8/OpenJDK17U-jdk_x64_linux_hotspot_17.0.16_8.tar.gz"
 
 echo "======================================"
-echo "☕ Java Installer (WEB USER ONLY)"
+echo "☕ Java Installer ($USER USER ONLY)"
 echo "======================================"
 
 # -----------------------------
@@ -83,7 +83,7 @@ fi
 # -----------------------------
 echo "===> Verifying installation..."
 
-"$JDK_DIR/bin/java" -version
+java -version
 
 echo ""
 echo "✅ Java installed successfully"
