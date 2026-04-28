@@ -45,7 +45,7 @@ if [ ! -s "$TMP_FILE" ]; then
 fi
 
 # -----------------------------
-# 3. Extract JDK (NO directory creation)
+# 3. Extract JDK
 # -----------------------------
 echo "===> Extracting JDK..."
 
@@ -69,16 +69,21 @@ export PATH=\$JAVA_HOME/bin:\$PATH
 EOF
 fi
 
-# apply immediately
+# apply immediately (IMPORTANT)
 export JAVA_HOME="$JDK_DIR"
-export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$JAVA_DIR/bin:$PATH"
+
+# reload profile (FIX)
+if [ -f "$PROFILE" ]; then
+  source "$PROFILE"
+fi
 
 # -----------------------------
 # 5. Verify installation
 # -----------------------------
 echo "===> Verifying installation..."
 
-java -version
+"$JDK_DIR/bin/java" -version
 
 echo ""
 echo "✅ Java installed successfully"
