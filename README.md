@@ -16,7 +16,7 @@ wget https://downloads.apache.org/tomcat/tomcat-11/v11.0.21/bin/apache-tomcat-11
 tar -xzf apache-tomcat-11.0.21.tar.gz -C . --strip-components=1
 ```
 ### Change port and deployment dir
-Search for port and change to the number we want
+Search for port and change to the number we want\n
 Search for appBase for deployment dir
 ```bash
 vim conf/server.xml
