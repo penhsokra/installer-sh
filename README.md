@@ -21,3 +21,11 @@ alias tlog='tail -1000f /opt/apache-tomcat-11.0.21/logs/catalina.out'
 alias tstart='sh /opt/apache-tomcat-11.0.18/bin/startup.sh'
 alias tstop='sh /opt/apache-tomcat-11.0.18/bin/shutdown.sh'
 ```
+### Start Tomcat
+```bash
+tstart
+```
+### Verify
+```bash
+ps -ef | grep tomcat
+```
