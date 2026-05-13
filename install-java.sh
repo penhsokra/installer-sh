@@ -15,10 +15,10 @@ echo "======================================"
 # 0. Check folder exists
 # -----------------------------
 if [ ! -d "$JDK_DIR" ]; then
-  echo "❌ ERROR: $JDK_DIR does not exist"
-  echo "👉 Please create it first:"
-  echo "   sudo mkdir -p $JDK_DIR"
-  exit 1
+  echo "$JDK_DIR does not exist"
+  echo "👉 folder create it first:"
+  mkdir -p /opt/jdk
+  chmod 750 $JDK_DIR
 fi
 
 echo "✔ JDK directory exists: $JDK_DIR"
