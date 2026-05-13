@@ -16,9 +16,10 @@ echo "======================================"
 # -----------------------------
 if [ ! -d "$JDK_DIR" ]; then
   echo "$JDK_DIR does not exist"
-  echo "👉 folder create it first:"
-  mkdir -p /opt/jdk
-  chmod 750 $JDK_DIR
+  echo "👉 Creating folder..."
+
+  mkdir -p "$JDK_DIR"
+  chmod 750 "$JDK_DIR"
 fi
 
 echo "✔ JDK directory exists: $JDK_DIR"
